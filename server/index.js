@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const UserModel = require("./models/Users");
+const ProductModel = require("./models/Products")
 
 const cors = require("cors");
 
@@ -21,7 +22,7 @@ app.get("/getUsers", async (req, res) => {
     }
   });
 
-  app.get("/getUser/:userId", async (req, res) => {
+app.get("/getUser/:userId", async (req, res) => {
     const userId = req.params.userId;
     try {
       const user = await UserModel.findOne({ _id: userId });
@@ -34,7 +35,7 @@ app.get("/getUsers", async (req, res) => {
       res.json(err);
     }
   });
-  
+
 
 
 app.post("/createUser", async (req, res) => {
@@ -45,6 +46,22 @@ app.post("/createUser", async (req, res) => {
   res.json(user);
 });
 
+app.get("/getProducts", async (req, res) => {
+  try {
+    const result = await ProductModel.find({});
+    res.json(result);
+  } catch (err) {
+    res.json(err);
+  }
+});
+
+app.post("/createProduct", async (req, res) => {
+  const product = req.body;
+  const newProduct = new ProductModel(product);
+  await newProduct.save();
+
+  res.json(product);
+});
 
 app.listen(3001, () => {
   console.log("SERVER RUNS PERFECTLY!");
