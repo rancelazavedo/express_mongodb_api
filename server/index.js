@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 
 mongoose.connect(
-  "mongodb+srv://user123:<password>@cluster0.evo7a7c.mongodb.net/merchappdb?retryWrites=true&w=majority"
+  "mongodb+srv://user123:hitohitonomi@cluster0.evo7a7c.mongodb.net/merchappdb?retryWrites=true&w=majority"
 );
 
 app.get("/getUsers", async (req, res) => {
