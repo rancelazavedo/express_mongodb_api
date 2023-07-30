@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 
 mongoose.connect(
-  "mongodb+srv://user123:hitohitonomi@cluster0.evo7a7c.mongodb.net/merchappdb?retryWrites=true&w=majority"
+  "mongodb+srv://user123:<password>@cluster0.evo7a7c.mongodb.net/merchappdb?retryWrites=true&w=majority"
 );
 
 app.get("/getUsers", async (req, res) => {
@@ -46,6 +46,21 @@ app.post("/createUser", async (req, res) => {
   res.json(user);
 });
 
+app.delete("/deleteUser/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const deletedUser = await UserModel.findByIdAndDelete(userId);
+    if (deletedUser) {
+      res.json({ message: "User deleted successfully", deletedUser });
+    } else {
+      res.json({ message: "User not found" });
+    }
+  } catch (err) {
+    res.json(err);
+  }
+});
+
+
 app.get("/getProducts", async (req, res) => {
   try {
     const result = await ProductModel.find({});
@@ -62,6 +77,21 @@ app.post("/createProduct", async (req, res) => {
 
   res.json(product);
 });
+
+app.delete("/deleteProduct/:productId", async (req, res) => {
+  const productId = req.params.productId;
+  try {
+    const deletedProduct = await ProductModel.findByIdAndDelete(productId);
+    if (deletedProduct) {
+      res.json({ message: "Product deleted successfully", deletedProduct });
+    } else {
+      res.json({ message: "Product not found" });
+    }
+  } catch (err) {
+    res.json(err);
+  }
+});
+
 
 app.listen(3001, () => {
   console.log("SERVER RUNS PERFECTLY!");
